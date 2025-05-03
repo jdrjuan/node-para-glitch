@@ -3,6 +3,7 @@ import productsController from '../controllers/products.js';
 
 const routerProducts = express.Router();
 
+
 ///////////////////////////////////////////////////////////////////////////////
 //                                 Rutas GET                                 //
 ///////////////////////////////////////////////////////////////////////////////
@@ -26,15 +27,20 @@ routerProducts.post('/', productsController.postProduct);
 routerProducts.put('/:id', productsController.putProduct);
 
 
+///////////////////////////////////////////////////////////////////////////////
+//                                 Rutas PATCH                               //
+///////////////////////////////////////////////////////////////////////////////
+
+routerProducts.patch('/:id', productsController.patchProduct);
+
+
 ////////////////////////////////////////////////////////////////////////////////
 //                                Rutas DELETE                                //
 ////////////////////////////////////////////////////////////////////////////////
 
 routerProducts.delete('/:id', productsController.deleteProduct);
 
-
-// Método de exportación con CommonJS
+// Método de exportación de CommonJS
 // module.exports = routerProducts;
 
-// Método de exportación con ES Modules
 export default routerProducts;

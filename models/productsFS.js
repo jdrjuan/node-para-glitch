@@ -34,6 +34,9 @@ class ProductModelFS {
     };
 
     getNextId = products => {
+        if (!Array.isArray(products) || products.length === 0) {
+            return '1';
+        }
         return (Number(products[products.length - 1].id) + 1).toString();
     }
 
@@ -45,6 +48,7 @@ class ProductModelFS {
         const products = await this.getProductsArrayFromFile();
 
         product.id = this.getNextId(products);
+        console.log(product.id);
         products.push(product);
         const writeOk = await this.saveProductsArrayToFile(products);
         if (!writeOk) {
@@ -86,6 +90,21 @@ class ProductModelFS {
             return null;
         }
         return product;
+    };
+
+    patchProduct = async (id, product) => {
+        const products = await this.getProductsArrayFromFile();
+        const index = products.findIndex(producto => producto.id === id);
+        if (index === -1) {
+            return null;
+        }
+        const updatedProduct = {...products[index], ...product, id};
+        products[index] = updatedProduct;
+        const writeOk = await this.saveProductsArrayToFile(products);
+        if (!writeOk) {
+            return null;
+        }
+        return updatedProduct;
     };
 
 

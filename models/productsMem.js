@@ -1,55 +1,51 @@
-import {products} from '../constants/constants.js';
+const products = [];
 
 class ProductModelMem {
 
-    getNextId = () => (Number(products[products.length - 1].id) + 1).toString();
+    getNextId = () => (Number(products[products.length - 1]?.id || 0) + 1).toString();
 
-    ////////////////////////////////////////////////////////////////////////////////
-    //                              CRUD - C: Create                              //
-    ////////////////////////////////////////////////////////////////////////////////
+    getProducts = async () => {
+        return products;
+    };
 
-    createProduct = product => {
+    getProduct = async id => products.find(product => product.id === id);
+
+    createProduct = async product => {
         product.id = this.getNextId();
         products.push(product);
         return product;
     };
 
-
-    ////////////////////////////////////////////////////////////////////////////////
-    //                               CRUD - R: Read                               //
-    ////////////////////////////////////////////////////////////////////////////////
-
-    getProducts = () => products;
-
-    getProduct = id => products.find(producto => producto.id === id);
-
-
-    ////////////////////////////////////////////////////////////////////////////////
-    //                              CRUD - U: Update                              //
-    ////////////////////////////////////////////////////////////////////////////////
-
-    updateProduct = (id, product) => {
-        const index = products.findIndex(producto => producto.id === id);
+    updateProduct = async (id, product) => {
+        const index = products.findIndex(product => product.id === id);
         if (index === -1) {
             return null;
         }
-        product.id = id;
-        products[index] = product;
-        return product;
+        
+        const updatedProduct = {...product, id};
+        products[index] = updatedProduct;
+        return updatedProduct;
     };
 
-
-    ////////////////////////////////////////////////////////////////////////////////
-    //                              CRUD - D: Delete                              //
-    ////////////////////////////////////////////////////////////////////////////////
-
-    deleteProduct = id => {
-        const index = products.findIndex(producto => producto.id === id);
+    patchProduct = async (id, partialProduct) => {
+        const index = products.findIndex(product => product.id === id);
         if (index === -1) {
             return null;
         }
-        const product = products.splice(index, 1)[0];
-        return product;
+    
+        const updatedProduct = {...products[index], ...partialProduct, id};
+        products[index] = updatedProduct;
+        return updatedProduct;
+    };
+
+    deleteProduct = async id => {
+        const index = products.findIndex(product => product.id === id);
+        if (index === -1) {
+            return null;
+        }
+
+        const deletedProduct = products.splice(index, 1)[0];
+        return deletedProduct;
     };
 
 }

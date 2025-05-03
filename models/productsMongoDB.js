@@ -32,7 +32,7 @@ class ProductModelMongoDB {
             await newProduct.save();
             return newProduct;
         } catch (error) {
-            console.error(`Error al crear el producto: ${error.message}`);
+            console.error('Error al crear el producto: ', error.message || 'Error desconocido');
             return null;
         }
     };
@@ -47,10 +47,10 @@ class ProductModelMongoDB {
             return null;
         }
         try {
-            const products = await Product.find({});
-            return products;
+            const foundProducts = await Product.find();
+            return foundProducts;
         } catch (error) {
-            console.error(`Error al leer los productos: ${error.message}`);
+        console.error('Error al obtener los productos: ', error.message || 'Error desconocido');
             return null;
         }
     };
@@ -63,7 +63,7 @@ class ProductModelMongoDB {
             const foundProduct = await Product.findById(id);
             return foundProduct;
         } catch (error) {
-            console.error(`Error al leer el producto: ${error.message}`);
+        console.error('Error al obtener el producto: ', error.message || 'Error desconocido');
             return null;
         }
     };
@@ -78,12 +78,27 @@ class ProductModelMongoDB {
             return null;
         }
         try {
-            const updatedProduct = await Product.findByIdAndUpdate(id, {$set: product}, {
+            const updatedProduct = await Product.findByIdAndUpdate(id, { $set: product }, {
                 returnDocument: 'after'
             });
             return updatedProduct;
         } catch (error) {
-            console.error(`Error al actualizar el producto ${id}: ${error.message}`);
+        console.error('Error al actualizar el producto: ', error.message || 'Error desconocido');
+            return null;
+        }
+    };
+
+    patchProduct = async (id, product) => {
+        if (! await MongoDB.connectDB()) {
+            return null;
+        }
+        try {
+            const patchedProduct = await Product.findByIdAndUpdate(id, { $set: product }, {
+                returnDocument: 'after'
+            });
+            return patchedProduct;
+        } catch (error) {
+        console.error('Error al parchear el producto: ', error.message || 'Error desconocido');
             return null;
         }
     };
@@ -101,7 +116,7 @@ class ProductModelMongoDB {
             const deletedProduct = await Product.findByIdAndDelete(id);
             return deletedProduct;
         } catch (error) {
-            console.error(`Error al eliminar el producto ${id}: ${error.message}`);
+        console.error('Error al eliminar el producto: ', error.message || 'Error desconocido');
             return null;
         }
     };

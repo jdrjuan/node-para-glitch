@@ -1,8 +1,7 @@
 import api from '../api/products.js';
 
-
 ////////////////////////////////////////////////////////////////////////////////
-//                               Get Controller                               //
+//                               GET Controller                               //
 ////////////////////////////////////////////////////////////////////////////////
 
 const getProducts = async (req, res) => {
@@ -19,47 +18,75 @@ const getProduct = async (req, res) => {
     if (!product) {
         return res.status(404).json({message: 'Producto no encontrado', product: null});
     }
-    res.json({message: 'ok', product});
+    // res.json({message: 'Ok', product: product});
+    res.json({message: 'Ok', product});
 };
 
+///////////////////////////////////////////////////////////////////////////////
+//                              POST Controller                              //
+///////////////////////////////////////////////////////////////////////////////
 
-///////////////////////////////////////////////////////////////////////////////
-//                              Post Controller                              //
-///////////////////////////////////////////////////////////////////////////////
 
 const postProduct = async (req, res) => {
     const product = req.body;
     const createdProduct = await api.createProduct(product);
-    res.status(201).json({message: 'ok', createdProduct});
+    
+    res.status(201).json({message: 'Producto dado de alta', createdProduct});
 };
 
 
 ////////////////////////////////////////////////////////////////////////////////
-//                               Put Controller                               //
+//                               PUT Controller                               //
 ////////////////////////////////////////////////////////////////////////////////
 
 const putProduct = async (req, res) => {
     const {id} = req.params;
     const product = req.body;
+
     const updatedProduct = await api.updateProduct(id, product);
+
     if (!updatedProduct) {
         return res.status(404).json({message: 'Producto no encontrado', product: null});
     }
-    res.json({message: 'ok', updatedProduct});
+
+    res.json({message: 'Producto actualizado', product: updatedProduct});
+
+};
+
+
+////////////////////////////////////////////////////////////////////////////////
+//                              PATCH Controller                              //
+////////////////////////////////////////////////////////////////////////////////
+
+const patchProduct = async (req, res) => {
+    const {id} = req.params;
+    const partialProduct = req.body;
+
+    const updatedProduct = await api.patchProduct(id, partialProduct);
+
+    if(!updatedProduct) {
+        return res.status(404).json({message: 'Producto no encontrado', product: null});
+    }
+
+    res.json({message: 'Producto actualizado', product: updatedProduct});
+
 };
 
 
 ///////////////////////////////////////////////////////////////////////////////
-//                             Delete Controller                             //
+//                             DELETE Controller                             //
 ///////////////////////////////////////////////////////////////////////////////
 
 const deleteProduct = async (req, res) => {
-    const {id} = req.params;
-    const removedProduct = await api.deleteProduct(id);
-    if (!removedProduct) {
-        return res.status(404).json({message: 'Producto no encontrado', product: null});
+    const { id } = req.params;
+
+    const deletedProduct = await api.deleteProduct(id);
+
+    if (!deletedProduct) {
+        return res.status(404).json({ message: 'Producto no encontrado', product: null });
     }
-    res.json({message: 'ok', removedProduct});
+
+    res.json({ message: 'Producto eliminado', product: deletedProduct });
 };
 
 
@@ -68,5 +95,6 @@ export default {
     getProduct,
     postProduct,
     putProduct,
+    patchProduct,
     deleteProduct,
 };

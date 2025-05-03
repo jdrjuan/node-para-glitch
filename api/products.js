@@ -9,7 +9,7 @@ import config from '../config.js';
 // const model = Model.get('MEMORY');
 // const model = Model.get('FILE SYSTEM');
 // const model = Model.get('MONGODB');
-const model = Model.get(config.APP_PERSISTENCE_TYPE);
+const model = Model.get(config.PERSISTENCE_TYPE);
 
 ///////////////////////////////////////////////////////////////////////////////
 //                                API Get All                                //
@@ -52,6 +52,16 @@ const updateProduct = async (id, product) => {
 
 
 ////////////////////////////////////////////////////////////////////////////////
+//                                 API Patch
+////////////////////////////////////////////////////////////////////////////////
+
+const patchProduct = (id, partialProduct) => {
+    const updatedProduct = model.patchProduct(id, partialProduct);
+    return updatedProduct;
+};
+
+
+////////////////////////////////////////////////////////////////////////////////
 //                                 API Delete                                 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -66,5 +76,6 @@ export default {
     getProduct,
     createProduct,
     updateProduct,
+    patchProduct,
     deleteProduct,
 };
