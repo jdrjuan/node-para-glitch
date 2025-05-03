@@ -6,5 +6,7 @@ const config = {
     MONGODB_TIMEOUT:            process.env.MONGODB_TIMEOUT || 2000,
     MONGODB_CONNECTION_STR:     process.env.MONGODB_CONNECTION_STR || 'mongodb://localhost:27017/ecommerce',
 };
+console.log(process.env.PORT);
 
 export default config;
+git a
